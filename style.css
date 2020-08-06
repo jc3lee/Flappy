@@ -1,0 +1,95 @@
+* {
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+:root {
+  --birdSize: 35px;
+  --obstacleWidth: 55px;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  background-color: black;
+}
+
+.container {
+  position: relative;
+  width: var(--initialWidth);
+  height: var(--initialHeight);
+  background-color: aliceblue;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.bird {
+  position: absolute;
+  z-index: 2000;
+  left: calc(50% - var(--birdSize));
+  width: var(--birdSize);
+  height: var(--birdSize);
+  /* background-image: url("./char1b.png");
+  background-size: 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  transform: scale(1.2); */
+}
+
+.bird img {
+  width: 100%;
+  scale: 1.2;
+}
+
+.gameOverBird {
+  animation: rotateAnim 0.25s linear forwards;
+}
+
+@keyframes rotateAnim {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(90deg);
+  }
+}
+
+[class*='obstacle'] {
+  position: absolute;
+  width: var(--obstacleWidth);
+  background-image: url("./tree.png");
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+}
+
+.obstacleTop {
+  top: 0;
+  transform: scaleY(-1);
+}
+
+.obstacleBtm {
+  bottom: 0;
+}
+
+.pair {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+@media(min-height: 500px) {
+  :root {
+    --birdSize: 40px;
+    --obstacleWidth: 65px;
+  }
+}
+
+@media(min-height: 600px) {
+  :root {
+    --birdSize: 50px;
+    --obstacleWidth: 80px;
+  }
+}

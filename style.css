@@ -7,12 +7,15 @@
 
 :root {
   --birdSize: 35px;
+  --bandWidth: 306px;
+  --bandHeight: 52px;
   --obstacleWidth: 55px;
 }
 
 body {
   width: 100%;
   height: 100vh;
+  font-family: 'Electrolize', sans-serif;
   background-color: black;
 }
 
@@ -20,9 +23,20 @@ body {
   position: relative;
   width: var(--initialWidth);
   height: var(--initialHeight);
-  background-color: aliceblue;
+  background-color: rgb(133, 202, 139);
   overflow: hidden;
   margin: 0 auto;
+}
+
+.grass {
+  width: 100%;
+  height: 85px;
+  position: absolute;
+  left: 0;
+  bottom: var(--bandHeight);
+  background-image: url("./grass.png");
+  background-size: cover;
+  background-repeat: repeat-x;
 }
 
 .bird {
@@ -38,22 +52,22 @@ body {
   transform: scale(1.2); */
 }
 
-.bird img {
+.birdImg {
   width: 100%;
-  scale: 1.2;
+  height: 100%;
+  transform: scale(2);
 }
 
-.gameOverBird {
-  animation: rotateAnim 0.25s linear forwards;
+.left_ear {
+  transform-origin: -150px 60px;
 }
 
-@keyframes rotateAnim {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(90deg);
-  }
+.right_ear {
+  transform-origin: -155px 60px;
+}
+
+.tail {
+  transform-origin: -160px 85px;
 }
 
 [class*='obstacle'] {
@@ -80,10 +94,58 @@ body {
   bottom: 0;
 }
 
+.band {
+  width: 100%;
+  height: var(--bandHeight);
+  position: absolute;
+  bottom: 0;
+  z-index: 5555;
+  background-image: url("./land.png");
+  background-size: var(--bandWidth) var(--bandHeight);
+  background-repeat: repeat-x;
+}
+
+.mainScoreBoard {
+  position: absolute;
+  text-align: center;
+  z-index: 9999;
+  top: 25px;
+  left: 0;
+  right: 0;
+  font-size: 4rem;
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 0 3px #000;
+}
+
+.menu {
+  display: none;
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10001;
+  color: white;
+  text-align: center;
+  background-color: beige;
+}
+
+.menuScoreContainer {
+  display: flex;
+  background-color: blue;
+  width: 100px;
+  margin: 0 auto;
+  flex-flow: column nowrap;
+}
+
 @media(min-height: 500px) {
   :root {
     --birdSize: 40px;
     --obstacleWidth: 65px;
+    --bandWidth: 330px;
+    --bandHeight: 56px;
   }
 }
 
@@ -91,5 +153,7 @@ body {
   :root {
     --birdSize: 50px;
     --obstacleWidth: 80px;
+    --bandWidth: 353px;
+    --bandHeight: 60px;
   }
 }

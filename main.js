@@ -64,6 +64,7 @@ const BAND_WIDTH = parseInt(getComputedStyle(document.documentElement).getProper
 let bandPosition = 0
 
 //game
+const GAME_SPEED = 15
 const JUMP_ANIM_DURATION = 500
 const OBSTACLE_INTERVAL = 2000
 let jumpElapsed = 0, obstacleElapsed = OBSTACLE_INTERVAL
@@ -85,9 +86,9 @@ const isCurrentObstacle = obstacleLeft => obstacleLeft < CENTER_ZONE_RIGHT && ob
 
 //initiate game
 
-// gameMovingInterval = setInterval(() => {
-//   animGame()
-// }, GAME_SPEED)
+gameMovingInterval = setInterval(() => {
+  animGame()
+}, GAME_SPEED)
 
 document.addEventListener("click", jumpBird)
 
@@ -240,11 +241,11 @@ const animGame = () => {
   renderGame()
   //remove jump if was jumping
   if (isJumping) isJumping = false
-  if (!isGameOver) {
-    requestAnimationFrame(animGame)
-  } else {
-    requestAnimationFrame(animGameOver)
-  }
+  // if (!isGameOver) {
+  //   requestAnimationFrame(animGame)
+  // } else {
+  //   requestAnimationFrame(animGameOver)
+  // }
 }
 
 const scoreUp = () => {
@@ -257,7 +258,11 @@ const gameOver = () => {
   isGameOver = true
   console.log("game over")
   document.removeEventListener("click", jumpBird)
+  clearInterval(gameMovingInterval)
   //
+  gameEndMovingInterval = setInterval(() => {
+    animGameOver()
+  }, GAME_SPEED)
 }
 
 const dropBird = () => {
@@ -301,9 +306,10 @@ const animGameOver = () => {
 
   if (dropBirdEnded && faceDownBirdEnded) {
     console.log("everything ended")
+    clearInterval(gameEndMovingInterval)
   } else {
-    requestAnimationFrame(animGameOver)
+    // requestAnimationFrame(animGameOver)
   }
 }
 
-requestAnimationFrame(animGame)
+// requestAnimationFrame(animGame)

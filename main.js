@@ -25,32 +25,33 @@ if (INITIAL_HEIGHT > 600) {
   INITIAL_WIDTH = INITIAL_HEIGHT * 3 / 4
 }
 
-console.log(INITIAL_WIDTH, INITIAL_HEIGHT)
+// console.log(INITIAL_WIDTH, INITIAL_HEIGHT)
+
 document.documentElement.style.setProperty("--initialWidth", INITIAL_WIDTH + "px")
 document.documentElement.style.setProperty("--initialHeight", INITIAL_HEIGHT + "px")
 
 //bird 
 const BIRD_SIZE = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--birdSize").replace("px", ""))
 
-console.log(BIRD_SIZE)
+// console.log(BIRD_SIZE)
 
-const JUMP_POWER = BIRD_SIZE * 0.22
+const JUMP_POWER = BIRD_SIZE * 0.2
 
 let isJumping = false
 let currentBirdY = INITIAL_HEIGHT / 2 - BIRD_SIZE
-let DROP_STEP = INITIAL_HEIGHT > 500 ? 3.25 : 3
+let DROP_STEP = INITIAL_HEIGHT > 500 ? 3 : 2.8
 
 //obstacle 
 
 const MIN_HEIGHT = INITIAL_HEIGHT * 0.2
 const MAX_HEIGHT = INITIAL_HEIGHT * 0.5
 const OBSTACLE_WIDTH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--obstacleWidth").replace("px", ""))
-const BACKGROUND_STEP = 2.5
+const BACKGROUND_STEP = 2
 const CENTER_ZONE_LEFT = INITIAL_WIDTH / 2 - BIRD_SIZE - OBSTACLE_WIDTH
 const CENTER_ZONE_RIGHT = INITIAL_WIDTH / 2
 
 const OBSTACLE_HEIGHT_GAP = 3.5 * BIRD_SIZE
-let obstaclePairLeft = INITIAL_WIDTH
+const OBSTACLE_PAIR_X = INITIAL_WIDTH
 const obstaclesArr = []
 
 //tail
@@ -80,9 +81,12 @@ let dropBirdEnded = false, faceDownBirdEnded = false
 
 const getRandomObstacleHeight = () => Math.floor(Math.random() * (MAX_HEIGHT - MIN_HEIGHT)) + MIN_HEIGHT
 
-const hasCollided = (gap) => currentBirdY < gap || currentBirdY + BIRD_SIZE > gap + OBSTACLE_HEIGHT_GAP
+const hasPassed = obstacle => obstacle.x + BACKGROUND_STEP < CENTER_ZONE_RIGHT && !obstacle.passedBird
 
-const isCurrentObstacle = obstacleLeft => obstacleLeft < CENTER_ZONE_RIGHT && obstacleLeft > CENTER_ZONE_LEFT
+// const hasCollided = obstacle => currentBirdY < obstacle.gap || currentBirdY + BIRD_SIZE > obstacle.gap + OBSTACLE_HEIGHT_GAP
+const hasCollided = () => false
+
+const isCurrentObstacle = obstacle => obstacle.x < CENTER_ZONE_RIGHT && obstacle.x > CENTER_ZONE_LEFT
 
 //initiate game
 
@@ -121,10 +125,11 @@ const moveBird = () => {
 }
 
 const addObstacle = () => {
-  obstacleElapsed -= 15
+  obstacleElapsed -= GAME_SPEED
   if (obstacleElapsed <= 0) {
-    getObstaclePair()
+    // console.log("here")
     obstacleElapsed = OBSTACLE_INTERVAL
+    getObstaclePair()
   }
 }
 
@@ -146,26 +151,25 @@ const getObstaclePair = () => {
   obstaclePair.appendChild(obstacleTop)
   obstaclePair.appendChild(obstacleBtm)
 
-  obstaclePair.style.left = obstaclePairLeft + "px"
+  obstaclePair.style.transform = `translate3d(${OBSTACLE_PAIR_X}px, 0, 0)`
 
   container.appendChild(obstaclePair)
 
-  //add left and gap
-  obstaclesArr.push({ left: obstaclePairLeft, gap: obStacleTopHeight, passedBird: false })
+  //add y and gap
+  obstaclesArr.push({ x: OBSTACLE_PAIR_X, gap: obStacleTopHeight, passedBird: false })
 }
 
 const moveObstacles = () => {
-  for (let i = obstaclesArr.length - 1; i >= 0; i--) {
-    const obstacleLeft = obstaclesArr[i].left - BACKGROUND_STEP
-    obstaclesArr[i].left = obstacleLeft
-    if (obstacleLeft + BACKGROUND_STEP < CENTER_ZONE_RIGHT && !obstaclesArr[i].passedBird) {
+  for (obstacle of obstaclesArr) {
+    obstacle.x -= BACKGROUND_STEP
+    if (hasPassed(obstacle)) {
       //change passedBird to true and add score
-      obstaclesArr[i].passedBird = true
+      obstacle.passedBird = true
       scoreUp()
     }
-    if (isCurrentObstacle(obstacleLeft)) {
+    if (isCurrentObstacle(obstacle)) {
       //obstacle inside the center zone
-      if (hasCollided(obstaclesArr[i].gap)) {
+      if (hasCollided(obstacle)) {
         //collision
         gameOver()
         return
@@ -198,21 +202,21 @@ const moveBackgroundBand = () => {
 const renderGame = () => {
 
   //move bird
-  bird.style.transform = `translateY(${currentBirdY}px)`
+  bird.style.transform = `translate3d(0, ${currentBirdY}px, 0)`
   //check if need to remove first pair
-  if (obstaclesArr[0] && obstaclesArr[0].left < -OBSTACLE_WIDTH) {
+  if (obstaclesArr[0] && obstaclesArr[0].x < -OBSTACLE_WIDTH) {
     //remove first item
     const firstPair = document.querySelector(".pair")
     container.removeChild(firstPair)
     obstaclesArr.shift()
-    console.log("removed")
+    // console.log("removed")
     return
   }
 
   //move obstacles
   const obstaclePairs = document.querySelectorAll(".pair")
   for (let i = 0; i < obstaclePairs.length; i++) {
-    obstaclePairs[i].style.left = obstaclesArr[i].left + "px"
+    obstaclePairs[i].style.transform = `translate3d(${obstaclesArr[i].x}px, 0, 0)`
   }
 
   //move tail
@@ -224,13 +228,12 @@ const renderGame = () => {
   //rotate body while preserving scale
   // birdImg.style.transform = `rotate(${birdImgDeg}deg) scale(2)`
   //move background band
-  band.style.backgroundPosition = `${bandPosition}px 0`
+  // band.style.backgroundPosition = `${bandPosition}px 0`
 }
 
 const animGame = () => {
 
   if (isJumping) jumpElapsed = JUMP_ANIM_DURATION
-  jumpElapsed -= 15
 
   // rotateBird()
   addObstacle()
@@ -239,6 +242,9 @@ const animGame = () => {
   moveTailAndEarsOnJump()
   moveBackgroundBand()
   renderGame()
+
+  if (jumpElapsed > 0) jumpElapsed -= GAME_SPEED
+
   //remove jump if was jumping
   if (isJumping) isJumping = false
   // if (!isGameOver) {
@@ -251,7 +257,7 @@ const animGame = () => {
 const scoreUp = () => {
   score++
   mainScoreBoard.innerHTML = score
-  console.log("score", score)
+  // console.log("score", score)
 }
 
 const gameOver = () => {
@@ -293,7 +299,7 @@ const faceDownBird = () => {
 
 const renderEndGame = () => {
   //move bird
-  bird.style.transform = `translateY(${currentBirdY}px)`
+  bird.style.transform = `translate3d(0, ${currentBirdY}px, 0)`
   //rotation should be handle here too
   birdImg.style.transform = `rotate(${birdImgDeg}deg) scale(2)`
 }

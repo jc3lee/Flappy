@@ -7,7 +7,7 @@
 
 :root {
   --birdSize: 35px;
-  --bandWidth: 306px;
+  --bandWidth: 612px;
   --bandHeight: 52px;
   --obstacleWidth: 55px;
 }
@@ -45,11 +45,6 @@ body {
   left: calc(50% - var(--birdSize));
   width: var(--birdSize);
   height: var(--birdSize);
-  /* background-image: url("./char1b.png");
-  background-size: 100%;
-  background-position: center center;
-  background-repeat: no-repeat;
-  transform: scale(1.2); */
 }
 
 .birdImg {
@@ -92,17 +87,18 @@ body {
   position: absolute;
   top: 0;
   bottom: 0;
+  left: 0;
 }
 
 .band {
-  width: 100%;
+  width: var(--bandWidth);
   height: var(--bandHeight);
   position: absolute;
   bottom: 0;
   z-index: 5555;
   background-image: url("./land.png");
   background-size: var(--bandWidth) var(--bandHeight);
-  background-repeat: repeat-x;
+  background-repeat: no-repeat;
 }
 
 .mainScoreBoard {
@@ -144,8 +140,6 @@ body {
   :root {
     --birdSize: 40px;
     --obstacleWidth: 65px;
-    --bandWidth: 330px;
-    --bandHeight: 56px;
   }
 }
 
@@ -153,7 +147,5 @@ body {
   :root {
     --birdSize: 50px;
     --obstacleWidth: 80px;
-    --bandWidth: 353px;
-    --bandHeight: 60px;
   }
 }

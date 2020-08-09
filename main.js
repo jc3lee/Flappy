@@ -30,20 +30,31 @@ if (INITIAL_HEIGHT > 600) {
 document.documentElement.style.setProperty("--initialWidth", INITIAL_WIDTH + "px")
 document.documentElement.style.setProperty("--initialHeight", INITIAL_HEIGHT + "px")
 
+//tail
+let tailDeg = 0
+
+//ears
+let leftEarDeg = 0, rightEarDeg = 0
+
+// background band
+const BAND_HEIGHT = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--bandHeight").replace("px", ""))
+const BAND_WIDTH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--bandWidth").replace("px", ""))
+let bandPosition = 0
+
 //bird 
 const BIRD_SIZE = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--birdSize").replace("px", ""))
 
 // console.log(BIRD_SIZE)
 
-const JUMP_POWER = BIRD_SIZE * 0.2
+const JUMP_POWER = BIRD_SIZE * 0.15
 
 let isJumping = false
-let currentBirdY = INITIAL_HEIGHT / 2 - BIRD_SIZE
+let currentBirdY = INITIAL_HEIGHT / 2 - BIRD_SIZE - BAND_HEIGHT
 let DROP_STEP = INITIAL_HEIGHT > 500 ? 3 : 2.8
 
 //obstacle 
 
-const MIN_HEIGHT = INITIAL_HEIGHT * 0.2
+const MIN_HEIGHT = INITIAL_HEIGHT * 0.12
 const MAX_HEIGHT = INITIAL_HEIGHT * 0.5
 const OBSTACLE_WIDTH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--obstacleWidth").replace("px", ""))
 const BACKGROUND_STEP = 2
@@ -54,19 +65,9 @@ const OBSTACLE_HEIGHT_GAP = 3.5 * BIRD_SIZE
 const OBSTACLE_PAIR_X = INITIAL_WIDTH
 const obstaclesArr = []
 
-//tail
-let tailDeg = 0
-//ears
-let leftEarDeg = 0, rightEarDeg = 0
-
-// background band
-const BAND_HEIGHT = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--bandHeight").replace("px", ""))
-const BAND_WIDTH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--bandWidth").replace("px", ""))
-let bandPosition = 0
-
 //game
 const GAME_SPEED = 15
-const JUMP_ANIM_DURATION = 500
+const JUMP_ANIM_DURATION = 250
 const OBSTACLE_INTERVAL = 2000
 let jumpElapsed = 0, obstacleElapsed = OBSTACLE_INTERVAL
 let score = 0
@@ -83,8 +84,8 @@ const getRandomObstacleHeight = () => Math.floor(Math.random() * (MAX_HEIGHT - M
 
 const hasPassed = obstacle => obstacle.x + BACKGROUND_STEP < CENTER_ZONE_RIGHT && !obstacle.passedBird
 
-// const hasCollided = obstacle => currentBirdY < obstacle.gap || currentBirdY + BIRD_SIZE > obstacle.gap + OBSTACLE_HEIGHT_GAP
-const hasCollided = () => false
+const hasCollided = obstacle => currentBirdY < obstacle.gap || currentBirdY + BIRD_SIZE > obstacle.gap + OBSTACLE_HEIGHT_GAP
+// const hasCollided = () => false
 
 const isCurrentObstacle = obstacle => obstacle.x < CENTER_ZONE_RIGHT && obstacle.x > CENTER_ZONE_LEFT
 
@@ -115,10 +116,10 @@ const moveBird = () => {
     gameOver()
     return
   }
-  if (jumpElapsed > JUMP_ANIM_DURATION * 0.85) {
-    currentBirdY -= JUMP_POWER * 1.5
-  } else if (jumpElapsed > JUMP_ANIM_DURATION * 0.65) {
-    currentBirdY -= JUMP_POWER / 3
+  if (jumpElapsed > JUMP_ANIM_DURATION * 0.63) {
+    currentBirdY -= JUMP_POWER * 1.7
+  } else if (jumpElapsed > JUMP_ANIM_DURATION * 0.4) {
+    currentBirdY -= JUMP_POWER / 3.5
   } else {
     currentBirdY += DROP_STEP
   }
@@ -155,7 +156,7 @@ const getObstaclePair = () => {
 
   container.appendChild(obstaclePair)
 
-  //add y and gap
+  //add x and gap
   obstaclesArr.push({ x: OBSTACLE_PAIR_X, gap: obStacleTopHeight, passedBird: false })
 }
 
@@ -179,10 +180,7 @@ const moveObstacles = () => {
 }
 
 const moveTailAndEarsOnJump = () => {
-  if (jumpElapsed > JUMP_ANIM_DURATION * 2 / 4) {
-    tailDeg = -70
-    leftEarDeg = -25
-    rightEarDeg = -25
+  if (jumpElapsed > JUMP_ANIM_DURATION * 0.2) {
     tailDeg = -70
     leftEarDeg = -25
     rightEarDeg = -25
@@ -196,13 +194,14 @@ const moveTailAndEarsOnJump = () => {
 const moveBackgroundBand = () => {
   //background 
   bandPosition -= BACKGROUND_STEP
-  if (bandPosition <= -BAND_WIDTH) bandPosition = 0
+  if (bandPosition <= -BAND_WIDTH / 4) bandPosition = 0
 }
 
 const renderGame = () => {
 
   //move bird
   bird.style.transform = `translate3d(0, ${currentBirdY}px, 0)`
+
   //check if need to remove first pair
   if (obstaclesArr[0] && obstaclesArr[0].x < -OBSTACLE_WIDTH) {
     //remove first item
@@ -220,15 +219,20 @@ const renderGame = () => {
   }
 
   //move tail
-  tail.style.transform = `rotate(${tailDeg}deg)`
+  tail.style.transform = `rotate3d(0, 0, 1, ${tailDeg}deg)`
+
   //move left ear
-  leftEar.style.transform = `rotate(${leftEarDeg}deg)`
+  leftEar.style.transform = `rotate3d(0, 0, 1, ${leftEarDeg}deg)`
+
   //move right ear
-  rightEar.style.transform = `rotate(${rightEarDeg}deg)`
+  rightEar.style.transform = `rotate3d(0, 0, 1, ${rightEarDeg}deg)`
+
   //rotate body while preserving scale
-  // birdImg.style.transform = `rotate(${birdImgDeg}deg) scale(2)`
+  // birdImg.style.transform = `rotate3d(0, 0, 1, ${birdImgDeg}deg) scale(2, 2, 1)`
+
   //move background band
-  // band.style.backgroundPosition = `${bandPosition}px 0`
+  band.style.transform = `translate3d(${bandPosition}px, 0, 0)`
+
 }
 
 const animGame = () => {
@@ -247,11 +251,6 @@ const animGame = () => {
 
   //remove jump if was jumping
   if (isJumping) isJumping = false
-  // if (!isGameOver) {
-  //   requestAnimationFrame(animGame)
-  // } else {
-  //   requestAnimationFrame(animGameOver)
-  // }
 }
 
 const scoreUp = () => {
@@ -264,8 +263,8 @@ const gameOver = () => {
   isGameOver = true
   console.log("game over")
   document.removeEventListener("click", jumpBird)
+  //game over clear gameMovingInterval, set gameEndMovingInterval
   clearInterval(gameMovingInterval)
-  //
   gameEndMovingInterval = setInterval(() => {
     animGameOver()
   }, GAME_SPEED)
@@ -301,7 +300,7 @@ const renderEndGame = () => {
   //move bird
   bird.style.transform = `translate3d(0, ${currentBirdY}px, 0)`
   //rotation should be handle here too
-  birdImg.style.transform = `rotate(${birdImgDeg}deg) scale(2)`
+  birdImg.style.transform = `rotate3d(0, 0, 1,  ${birdImgDeg}deg) scale3d(2, 2, 1)`
 }
 
 const animGameOver = () => {
@@ -313,9 +312,6 @@ const animGameOver = () => {
   if (dropBirdEnded && faceDownBirdEnded) {
     console.log("everything ended")
     clearInterval(gameEndMovingInterval)
-  } else {
-    // requestAnimationFrame(animGameOver)
   }
 }
 
-// requestAnimationFrame(animGame)

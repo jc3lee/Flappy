@@ -7,7 +7,7 @@
 
 :root {
   --birdSize: 35px;
-  --bandWidth: 612px;
+  --bandWidth: 2448px;
   --bandHeight: 52px;
   --obstacleWidth: 55px;
 }
@@ -50,7 +50,7 @@ body {
 .birdImg {
   width: 100%;
   height: 100%;
-  transform: scale(2);
+  transform: scale3d(2, 2, 1);
 }
 
 .left_ear {
@@ -76,7 +76,7 @@ body {
 
 .obstacleTop {
   top: 0;
-  transform: scaleY(-1);
+  transform: scale3d(1, -1, 1);
 }
 
 .obstacleBtm {
@@ -121,7 +121,7 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate3d(-50%, -50%, 0);
   z-index: 10001;
   color: white;
   text-align: center;
@@ -134,6 +134,17 @@ body {
   width: 100px;
   margin: 0 auto;
   flex-flow: column nowrap;
+}
+
+.startBtn {
+  background: green;
+  color: white;
+  border: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
 }
 
 @media(min-height: 500px) {

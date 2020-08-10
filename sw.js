@@ -1,17 +1,17 @@
 const STATIC_CACHE = "static_cache"
 const FILES_TO_CACHE = [
-  "/",
-  "/index.html",
-  "/main.js",
-  "/style.css",
-  "/flappy_card.png",
-  "/grass.png",
-  "/land.png",
-  "/totoro1.svg",
-  "/tree.png",
-  "/icons/favicon-16x16.png",
-  "/icons/favicon-32x32.png",
-  "/Electrolize-Regular.ttf",
+  "./",
+  "./index.html",
+  "./main.js",
+  "./style.css",
+  "./flappy_card.png",
+  "./grass.png",
+  "./land.png",
+  "./totoro1.svg",
+  "./tree.png",
+  "./icons/favicon-16x16.png",
+  "./icons/favicon-32x32.png",
+  "./Electrolize-Regular.ttf",
 ]
 
 self.addEventListener("install", e => {

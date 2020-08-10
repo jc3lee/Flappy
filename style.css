@@ -7,7 +7,7 @@
 
 @font-face {
   font-family: 'Electrolize';
-  src: url('/Electrolize-Regular.ttf');
+  src: url('./Electrolize-Regular.ttf');
 }
 
 :root {

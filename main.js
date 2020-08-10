@@ -53,7 +53,7 @@ const BIRD_SIZE = parseInt(getComputedStyle(document.documentElement).getPropert
 // console.log(BIRD_SIZE)
 
 const JUMP_POWER = BIRD_SIZE * 0.15
-const DROP_STEP = INITIAL_HEIGHT > 500 ? 3 : 2.8
+const DROP_STEP = INITIAL_HEIGHT > 500 ? 3.25 : 3
 
 let isJumping
 let currentBirdY
@@ -90,7 +90,7 @@ const getRandomObstacleHeight = () => Math.floor(Math.random() * (MAX_HEIGHT - M
 
 const hasPassed = obstacle => obstacle.x + BACKGROUND_STEP < CENTER_ZONE_RIGHT && !obstacle.passedBird
 
-const hasCollided = obstacle => currentBirdY < obstacle.gap - 2 || currentBirdY + BIRD_SIZE > obstacle.gap + OBSTACLE_HEIGHT_GAP
+const hasCollided = obstacle => currentBirdY < obstacle.gap - 5 || currentBirdY + BIRD_SIZE > obstacle.gap + OBSTACLE_HEIGHT_GAP
 // const hasCollided = () => false
 
 const isCurrentObstacle = obstacle => obstacle.x < CENTER_ZONE_RIGHT && obstacle.x > CENTER_ZONE_LEFT
@@ -157,10 +157,10 @@ const moveBird = () => {
     gameOver()
     return
   }
-  if (jumpElapsed > JUMP_ANIM_DURATION * 0.63) {
-    currentBirdY -= JUMP_POWER * 1.7
+  if (jumpElapsed > JUMP_ANIM_DURATION * 0.65) {
+    currentBirdY -= JUMP_POWER * 1.9
   } else if (jumpElapsed > JUMP_ANIM_DURATION * 0.4) {
-    currentBirdY -= JUMP_POWER / 3.5
+    currentBirdY -= JUMP_POWER / 3
   } else {
     currentBirdY += DROP_STEP
   }

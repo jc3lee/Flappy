@@ -45,6 +45,7 @@ body {
   left: calc(50% - var(--birdSize));
   width: var(--birdSize);
   height: var(--birdSize);
+  visibility: hidden;
 }
 
 .birdImg {
@@ -115,33 +116,60 @@ body {
 }
 
 .menu {
-  display: none;
-  width: 200px;
-  height: 200px;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate3d(-50%, -50%, 0);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 10001;
-  color: white;
-  text-align: center;
-  background-color: beige;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  transform: translate3d(0, -100%, 0);
+  transition: transform 0.2s ease;
+}
+
+.showMenu {
+  transform: translate3d(0, 0, 0);
 }
 
 .menuScoreContainer {
   display: flex;
-  background-color: blue;
+  background-color: rgb(221, 245, 220);
   width: 100px;
-  margin: 0 auto;
+  height: 160px;
   flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 0 0 5px rgb(0, 88, 22);
+  text-align: center;
+}
+
+.menuScoreContainer .info {
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  color: rgb(221, 53, 53);
+  font-weight: bold;
+}
+
+.score, .highscore {
+  font-size: 2.5rem;
+  color: rgb(0, 88, 22);
+  font-weight: bold;
 }
 
 .startBtn {
-  background: green;
+  margin-top: 2rem;
+  background: rgb(233, 59, 59);
+  box-shadow: 0 0 0 5px rgb(0, 88, 22), inset 0 0 0 5px #fff;
+  text-transform: uppercase;
   color: white;
   border: none;
   font-weight: bold;
-  text-transform: uppercase;
+  width: 150px;
   font-size: 1.5rem;
   padding: 0.5rem 1rem;
   cursor: pointer;

@@ -7,6 +7,12 @@ const container = document.querySelector(".container")
 const band = document.querySelector(".band")
 const mainScoreBoard = document.querySelector(".mainScoreBoard")
 
+//menu
+const menu = document.querySelector(".menu")
+const startBtn = document.querySelector(".startBtn")
+const scoreBoard = document.querySelector(".score")
+const highscoreBoard = document.querySelector(".highscore")
+
 const screenWidth = window.innerWidth
 const screenHeight = window.innerHeight
 
@@ -31,15 +37,15 @@ document.documentElement.style.setProperty("--initialWidth", INITIAL_WIDTH + "px
 document.documentElement.style.setProperty("--initialHeight", INITIAL_HEIGHT + "px")
 
 //tail
-let tailDeg = 0
+let tailDeg
 
 //ears
-let leftEarDeg = 0, rightEarDeg = 0
+let leftEarDeg, rightEarDeg
 
 // background band
 const BAND_HEIGHT = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--bandHeight").replace("px", ""))
 const BAND_WIDTH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--bandWidth").replace("px", ""))
-let bandPosition = 0
+let bandPosition
 
 //bird 
 const BIRD_SIZE = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--birdSize").replace("px", ""))
@@ -47,38 +53,38 @@ const BIRD_SIZE = parseInt(getComputedStyle(document.documentElement).getPropert
 // console.log(BIRD_SIZE)
 
 const JUMP_POWER = BIRD_SIZE * 0.15
+const DROP_STEP = INITIAL_HEIGHT > 500 ? 3 : 2.8
 
-let isJumping = false
-let currentBirdY = INITIAL_HEIGHT / 2 - BIRD_SIZE - BAND_HEIGHT
-let DROP_STEP = INITIAL_HEIGHT > 500 ? 3 : 2.8
+let isJumping
+let currentBirdY
 
 //obstacle 
 
 const MIN_HEIGHT = INITIAL_HEIGHT * 0.12
 const MAX_HEIGHT = INITIAL_HEIGHT * 0.5
 const OBSTACLE_WIDTH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--obstacleWidth").replace("px", ""))
-const BACKGROUND_STEP = 2
+const BACKGROUND_STEP = 2.5
 const CENTER_ZONE_LEFT = INITIAL_WIDTH / 2 - BIRD_SIZE - OBSTACLE_WIDTH
 const CENTER_ZONE_RIGHT = INITIAL_WIDTH / 2
 
 const OBSTACLE_HEIGHT_GAP = 3.5 * BIRD_SIZE
 const OBSTACLE_PAIR_X = INITIAL_WIDTH + OBSTACLE_WIDTH
-const obstaclesArr = []
+let obstaclesArr
 
 //game
 const GAME_SPEED = 15
 const JUMP_ANIM_DURATION = 250
-const OBSTACLE_INTERVAL = 2000
-let jumpElapsed = 0, obstacleElapsed = OBSTACLE_INTERVAL
-let score = 0
-let highscore = 0
-let gameMovingInterval = ""
-let gameEndMovingInterval = ""
-let isGameOver = false
+const OBSTACLE_INTERVAL = 1600
+let jumpElapsed, obstacleElapsed
+let score
+let highscore
+let gameMovingInterval
+let gameEndMovingInterval
+let isGameOver
 
 //game over
-let failJumped = false, birdImgDeg = 0
-let dropBirdEnded = false, faceDownBirdEnded = false
+let failJumped, birdImgDeg
+let dropBirdEnded, faceDownBirdEnded
 
 const getRandomObstacleHeight = () => Math.floor(Math.random() * (MAX_HEIGHT - MIN_HEIGHT)) + MIN_HEIGHT
 
@@ -91,15 +97,50 @@ const isCurrentObstacle = obstacle => obstacle.x < CENTER_ZONE_RIGHT && obstacle
 
 //initiate game
 
-gameMovingInterval = setInterval(() => {
-  animGame()
-}, GAME_SPEED)
+const initGame = () => {
+  //tail
+  tailDeg = 0
+  //ears
+  leftEarDeg = 0
+  rightEarDeg = 0
+  // background band
+  bandPosition = 0
+  //bird
+  isJumping = false
+  currentBirdY = INITIAL_HEIGHT / 2 - BIRD_SIZE - BAND_HEIGHT
+  //obstacle 
+  obstaclesArr = []
+  //game
+  jumpElapsed = 0
+  obstacleElapsed = OBSTACLE_INTERVAL
+  score = 0
+  highscore = localStorage.getItem("flappy_highscore") || 0
+  gameMovingInterval = ""
+  gameEndMovingInterval = ""
+  isGameOver = false
+  //game over
+  failJumped = false
+  birdImgDeg = 0
+  dropBirdEnded = false
+  faceDownBirdEnded = false
+  //init bird position & rotation
+  bird.style.transform = `translate3d(0, ${currentBirdY}px, 0)`
+  birdImg.style.transform = `rotate3d(0, 0, 1, 0deg) scale3d(2, 2, 1)`
+  //reset score
+  mainScoreBoard.innerHTML = score
 
-document.addEventListener("click", jumpBird)
+  //remove all obstacles
+  const obstaclePairs = document.querySelectorAll(".pair")
+  if (obstaclePairs.length > 0) {
+    obstaclePairs.forEach(obstaclePair => container.removeChild(obstaclePair))
+  }
 
-function jumpBird() {
+}
+
+initGame()
+
+const jumpBird = () => {
   isJumping = true
-  //try animating tail
 }
 
 const rotateBird = () => {
@@ -236,7 +277,6 @@ const renderGame = () => {
 }
 
 const animGame = () => {
-
   if (isJumping) jumpElapsed = JUMP_ANIM_DURATION
 
   // rotateBird()
@@ -256,18 +296,23 @@ const animGame = () => {
 const scoreUp = () => {
   score++
   mainScoreBoard.innerHTML = score
+  if (score > highscore) {
+    highscore = score
+    localStorage.setItem("flappy_highscore", highscore)
+  }
   // console.log("score", score)
 }
 
 const gameOver = () => {
   isGameOver = true
   console.log("game over")
-  document.removeEventListener("click", jumpBird)
   //game over clear gameMovingInterval, set gameEndMovingInterval
   clearInterval(gameMovingInterval)
   gameEndMovingInterval = setInterval(() => {
     animGameOver()
   }, GAME_SPEED)
+  //show menu
+  showMenu()
 }
 
 const dropBird = () => {
@@ -315,3 +360,52 @@ const animGameOver = () => {
   }
 }
 
+//show menu
+
+const showMenu = () => {
+  updateScoreBoard()
+  menu.classList.add("showMenu")
+}
+
+//hide menu
+
+const hideMenu = () => {
+  updateScoreBoard()
+  menu.classList.remove("showMenu")
+}
+
+//update
+const updateScoreBoard = () => {
+  highscore = localStorage.getItem("flappy_highscore") || 0
+  scoreBoard.innerHTML = score
+  highscoreBoard.innerHTML = highscore
+}
+
+//start
+const handleStartClick = e => {
+  e.stopPropagation()
+  hideMenu()
+  showBird()
+  //start game
+  startGame()
+}
+
+const showBird = () => {
+  bird.style.visibility = "visible"
+}
+
+const startGame = () => {
+  initGame()
+
+  gameMovingInterval = setInterval(() => {
+    animGame()
+  }, GAME_SPEED)
+}
+
+//hide bird
+bird.style.visibility = "hidden"
+
+startBtn.addEventListener("click", handleStartClick)
+document.addEventListener("click", jumpBird)
+
+showMenu()

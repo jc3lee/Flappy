@@ -3,7 +3,7 @@
   "short_name": "Flappy Totoro",
   "theme_color": "#48955c",
   "background_color": "#44a032",
-  "display": "browser",
+  "display": "minimal-ui",
   "description": "Flappy Bird meets Ghibli",
   "orientation": "portrait-primary",
   "scope": ".",

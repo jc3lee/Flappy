@@ -7,7 +7,7 @@
   "description": "Flappy Bird meets Ghibli",
   "orientation": "portrait-primary",
   "scope": ".",
-  "start_url": "/index.html",
+  "start_url": "/",
   "lang": "en",
   "icons": [
     {

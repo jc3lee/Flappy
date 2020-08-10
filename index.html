@@ -27,9 +27,27 @@
 
   <!-- Meta Tags Generated via http://heymeta.com -->
 
+  <link rel="icon" type="image/png" href="/icons/favicon-16x16.png" sizes="16x16">
+  <link rel="icon" type="image/png" href="/icons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/icons/pwa-192x192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon-180x180.png" sizes="180x180">
+  <meta name="msapplication-config" content="/icons/browserconfig.xml">
+  <link rel="manifest" href="manifest.json">
+  <!-- iOS  -->
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon-180x180.png" sizes="180x180">
+
+  <!-- Android  -->
+  <meta name="theme-color" content="rgb(133, 202, 139)">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- iOS -->
+  <meta name="apple-mobile-web-app-title" content="Flappy Totoro">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="rgb(0, 88, 22)">
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Electrolize&display=swap" rel="stylesheet">
+  <link href="a.woff2" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="main.js" defer></script>
 </head>
@@ -128,6 +146,15 @@
     </div>
     <button class="startBtn">play</button>
   </div>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js")
+        .then(() => {
+          console.log("service worker registered")
+        })
+    }
+
+  </script>
 </body>
 
 </html>

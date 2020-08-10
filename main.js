@@ -90,7 +90,7 @@ const getRandomObstacleHeight = () => Math.floor(Math.random() * (MAX_HEIGHT - M
 
 const hasPassed = obstacle => obstacle.x + BACKGROUND_STEP < CENTER_ZONE_RIGHT && !obstacle.passedBird
 
-const hasCollided = obstacle => currentBirdY < obstacle.gap || currentBirdY + BIRD_SIZE > obstacle.gap + OBSTACLE_HEIGHT_GAP
+const hasCollided = obstacle => currentBirdY < obstacle.gap - 2 || currentBirdY + BIRD_SIZE > obstacle.gap + OBSTACLE_HEIGHT_GAP
 // const hasCollided = () => false
 
 const isCurrentObstacle = obstacle => obstacle.x < CENTER_ZONE_RIGHT && obstacle.x > CENTER_ZONE_LEFT

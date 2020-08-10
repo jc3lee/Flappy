@@ -1,0 +1,24 @@
+{
+  "name": "Flappy Totoro",
+  "short_name": "Flappy Totoro",
+  "theme_color": "#48955c",
+  "background_color": "#44a032",
+  "display": "browser",
+  "description": "Flappy Bird meets Ghibli",
+  "orientation": "portrait-primary",
+  "scope": ".",
+  "start_url": "/index.html",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "./icons/pwa-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./icons/pwa-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

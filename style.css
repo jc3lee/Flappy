@@ -5,6 +5,11 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'Electrolize';
+  src: url('/Electrolize-Regular.ttf');
+}
+
 :root {
   --birdSize: 35px;
   --bandWidth: 2448px;
@@ -15,7 +20,6 @@
 body {
   width: 100%;
   height: 100vh;
-  font-family: 'Electrolize', sans-serif;
   background-color: black;
 }
 
@@ -113,9 +117,11 @@ body {
   color: white;
   font-weight: bold;
   text-shadow: 0 0 3px #000;
+  font-family: 'Electrolize', sans-serif;
 }
 
 .menu {
+  font-family: 'Electrolize', sans-serif;
   position: absolute;
   top: 0;
   left: 0;

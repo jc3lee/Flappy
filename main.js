@@ -81,6 +81,8 @@ let highscore
 let gameMovingInterval
 let gameEndMovingInterval
 let isGameOver
+let gameHasStarted = false
+
 
 //game over
 let failJumped, birdImgDeg
@@ -311,6 +313,8 @@ const gameOver = () => {
   gameEndMovingInterval = setInterval(() => {
     animGameOver()
   }, GAME_SPEED)
+  //reset gameHasStarted stated
+  gameHasStarted = false
   //show menu
   showMenu()
 }
@@ -383,6 +387,8 @@ const updateScoreBoard = () => {
 
 //start
 const handleStartClick = e => {
+  if (gameHasStarted) return
+  gameHasStarted = true
   e.stopPropagation()
   hideMenu()
   showBird()

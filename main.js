@@ -393,10 +393,8 @@ const updateScoreBoard = () => {
 
 //start
 const handleStartClick = e => {
-  console.log("here")
   e.stopPropagation()
   if (hasStarted) return
-  console.log("but also here")
   hasStarted = true
   hideMenu()
   showBird()

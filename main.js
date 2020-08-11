@@ -81,6 +81,7 @@ let highscore
 let gameMovingInterval
 let gameEndMovingInterval
 let isGameOver
+let hasStarted = false
 
 //game over
 let failJumped, birdImgDeg
@@ -139,7 +140,13 @@ const initGame = () => {
 
 initGame()
 
+const handleKeyDown = e => {
+  if (e.keyCode === 32) {
+    jumpBird()
+  }
+}
 const jumpBird = () => {
+  if (!hasStarted) return
   isJumping = true
 }
 
@@ -358,6 +365,7 @@ const animGameOver = () => {
 
   if (dropBirdEnded && faceDownBirdEnded) {
     console.log("everything ended")
+    hasStarted = false
     clearInterval(gameEndMovingInterval)
   }
 }
@@ -385,7 +393,11 @@ const updateScoreBoard = () => {
 
 //start
 const handleStartClick = e => {
+  console.log("here")
   e.stopPropagation()
+  if (hasStarted) return
+  console.log("but also here")
+  hasStarted = true
   hideMenu()
   showBird()
   //start game
@@ -410,5 +422,6 @@ bird.style.visibility = "hidden"
 
 startBtn.addEventListener("click", handleStartClick)
 document.addEventListener("click", jumpBird)
+document.addEventListener("keydown", handleKeyDown)
 
 showMenu()

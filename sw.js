@@ -1,17 +1,17 @@
-const STATIC_CACHE = "static-v2"
+const STATIC_CACHE = "static-v3"
 const FILES_TO_CACHE = [
   "/",
   "index.html",
   "main.js",
   "style.css",
-  "flappy_card.png",
-  "grass.png",
-  "land.png",
-  "totoro1.svg",
-  "tree.png",
-  "icons/favicon-16x16.png",
-  "icons/favicon-32x32.png",
-  "Electrolize-Regular.ttf",
+  "./assets/gameImgs/flappy_card.png",
+  "./assets/gameImgs/grass.png",
+  "./assets/gameImgs/land.png",
+  "./assets/gameImgs/tree.png",
+  "./assets/icons/favicon-16x16.png",
+  "./assets/icons/favicon-32x32.png",
+  "./assets/fonts/Electrolize-Regular.ttf",
+  "./assets/sounds/bgm1.mp3",
 ]
 
 self.addEventListener("install", e => {

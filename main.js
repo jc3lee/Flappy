@@ -61,7 +61,7 @@ const BIRD_SIZE = parseInt(getComputedStyle(document.documentElement).getPropert
 // console.log(BIRD_SIZE)
 
 const JUMP_POWER = BIRD_SIZE * 0.15
-const DROP_STEP = INITIAL_HEIGHT > 500 ? 3.25 : 3
+const DROP_STEP = INITIAL_HEIGHT > 500 ? 3.1 : 2.8
 
 let isJumping
 let currentBirdY

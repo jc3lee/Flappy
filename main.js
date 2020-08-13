@@ -82,7 +82,7 @@ let obstaclesArr
 //game
 const GAME_SPEED = 15
 const JUMP_ANIM_DURATION = 250
-const OBSTACLE_INTERVAL = 1600
+const OBSTACLE_INTERVAL = 2000
 let jumpElapsed, obstacleElapsed, obstacleCounter = 0
 let score
 let highscore

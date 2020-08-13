@@ -7,7 +7,7 @@
 
 @font-face {
   font-family: 'Electrolize';
-  src: url('./Electrolize-Regular.ttf') format('truetype');
+  src: url('./assets/fonts/Electrolize-Regular.ttf') format('truetype');
 }
 
 :root {
@@ -38,7 +38,7 @@ body {
   position: absolute;
   left: 0;
   bottom: var(--bandHeight);
-  background-image: url("./grass.png");
+  background-image: url("./assets/gameImgs/grass.png");
   background-size: cover;
   background-repeat: repeat-x;
 }
@@ -73,7 +73,7 @@ body {
 [class*='obstacle'] {
   position: absolute;
   width: var(--obstacleWidth);
-  background-image: url("./tree.png");
+  background-image: url("./assets/gameImgs/tree.png");
   background-size: cover;
   background-position: top;
   background-repeat: no-repeat;
@@ -101,7 +101,7 @@ body {
   position: absolute;
   bottom: 0;
   z-index: 5555;
-  background-image: url("./land.png");
+  background-image: url("./assets/gameImgs/land.png");
   background-size: var(--bandWidth) var(--bandHeight);
   background-repeat: no-repeat;
 }
@@ -179,6 +179,33 @@ body {
   font-size: 1.5rem;
   padding: 0.5rem 1rem;
   cursor: pointer;
+}
+
+.musicBtn {
+  position: absolute;
+  box-shadow: 0 0 0 5px rgb(0, 88, 22);
+  background-color: rgb(221, 245, 220);
+  top: 25px;
+  border-radius: 8px;
+  right: 25px;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem;
+  width: 40px;
+  height: 40px;
+}
+
+.musicBtn .music {
+  width: 100%;
+  height: 100%;
+}
+
+.music .off {
+  fill: rgb(0, 88, 22);
+}
+
+.music .on {
+  fill: none;
 }
 
 @media(min-height: 500px) {

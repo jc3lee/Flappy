@@ -6,6 +6,13 @@ const birdImg = document.querySelector(".birdImg")
 const container = document.querySelector(".container")
 const band = document.querySelector(".band")
 const mainScoreBoard = document.querySelector(".mainScoreBoard")
+const musicBtn = document.querySelector(".musicBtn")
+const musicOn = document.querySelector(".on")
+const musicOff = document.querySelector(".off")
+
+//music
+const gameAudio = new Audio("./assets/sounds/bgm1.mp3")
+gameAudio.loop = true
 
 //menu
 const menu = document.querySelector(".menu")
@@ -53,7 +60,7 @@ const BIRD_SIZE = parseInt(getComputedStyle(document.documentElement).getPropert
 // console.log(BIRD_SIZE)
 
 const JUMP_POWER = BIRD_SIZE * 0.15
-const DROP_STEP = INITIAL_HEIGHT > 500 ? 3.25 : 3
+const DROP_STEP = INITIAL_HEIGHT > 500 ? 3.5 : 3.25
 
 let isJumping
 let currentBirdY
@@ -75,7 +82,7 @@ let obstaclesArr
 const GAME_SPEED = 15
 const JUMP_ANIM_DURATION = 250
 const OBSTACLE_INTERVAL = 1600
-let jumpElapsed, obstacleElapsed
+let jumpElapsed, obstacleElapsed, obstacleCounter = 0
 let score
 let highscore
 let gameMovingInterval
@@ -164,7 +171,7 @@ const moveBird = () => {
     gameOver()
     return
   }
-  if (jumpElapsed > JUMP_ANIM_DURATION * 0.65) {
+  if (jumpElapsed > JUMP_ANIM_DURATION * 0.64) {
     currentBirdY -= JUMP_POWER * 1.9
   } else if (jumpElapsed > JUMP_ANIM_DURATION * 0.4) {
     currentBirdY -= JUMP_POWER / 3
@@ -178,6 +185,7 @@ const addObstacle = () => {
   if (obstacleElapsed <= 0) {
     // console.log("here")
     obstacleElapsed = OBSTACLE_INTERVAL
+    obstacleCounter++
     getObstaclePair()
   }
 }
@@ -415,11 +423,41 @@ const startGame = () => {
   }
 }
 
-//hide bird
-bird.style.visibility = "hidden"
+const tryToStartMusic = () => {
+  gameAudio.currentTime = 0
+  gameAudio.play()
+  // console.log("paused?", gameAudio.paused)
+  if (!gameAudio.paused) {
+    // console.log("autoplay successful")
+    musicOn.style.fill = "#000"
+    musicOff.style.fill = "none"
+  }
+}
 
+const toggleMusic = () => {
+  if (gameAudio.paused) {
+    // console.log("paused")
+    // console.log("play it")
+    gameAudio.play()
+    musicOn.style.fill = "rgb(0, 88, 22)"
+    musicOff.style.fill = "none"
+  } else {
+    // console.log("not paused")
+    // console.log("paused it")
+    gameAudio.pause()
+    musicOn.style.fill = "none"
+    musicOff.style.fill = "rgb(0, 88, 22)"
+  }
+  // console.log("time", gameAudio.currentTime)
+}
+
+
+musicBtn.addEventListener("click", toggleMusic)
 startBtn.addEventListener("click", handleStartClick)
 document.addEventListener("click", jumpBird)
 document.addEventListener("keydown", handleKeyDown)
+gameAudio.addEventListener("loadedmetadata", tryToStartMusic)
 
+//hide bird
+bird.style.visibility = "hidden"
 showMenu()

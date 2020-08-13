@@ -13,6 +13,7 @@ const musicOff = document.querySelector(".off")
 //music
 const gameAudio = new Audio("./assets/sounds/bgm1.mp3")
 gameAudio.loop = true
+const MUSIC_BTN_COLOR = "rgb(0, 88, 22)"
 
 //menu
 const menu = document.querySelector(".menu")
@@ -426,12 +427,14 @@ const startGame = () => {
 const tryToStartMusic = () => {
   gameAudio.currentTime = 0
   gameAudio.play()
-  // console.log("paused?", gameAudio.paused)
-  if (!gameAudio.paused) {
-    // console.log("autoplay successful")
-    musicOn.style.fill = "#000"
-    musicOff.style.fill = "none"
-  }
+    .then(() => {
+      musicOn.style.fill = MUSIC_BTN_COLOR
+      musicOff.style.fill = "none"
+    })
+    .catch(() => {
+      musicOn.style.fill = "none"
+      musicOff.style.fill = MUSIC_BTN_COLOR
+    })
 }
 
 const toggleMusic = () => {
@@ -439,14 +442,14 @@ const toggleMusic = () => {
     // console.log("paused")
     // console.log("play it")
     gameAudio.play()
-    musicOn.style.fill = "rgb(0, 88, 22)"
+    musicOn.style.fill = MUSIC_BTN_COLOR
     musicOff.style.fill = "none"
   } else {
     // console.log("not paused")
     // console.log("paused it")
     gameAudio.pause()
     musicOn.style.fill = "none"
-    musicOff.style.fill = "rgb(0, 88, 22)"
+    musicOff.style.fill = MUSIC_BTN_COLOR
   }
   // console.log("time", gameAudio.currentTime)
 }

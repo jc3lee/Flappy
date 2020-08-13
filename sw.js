@@ -1,9 +1,9 @@
-const STATIC_CACHE = "static-v2"
+const STATIC_CACHE = "static-v3"
 const FILES_TO_CACHE = [
   "/",
-  "index.html",
-  "main.js",
-  "style.css",
+  "./index.html",
+  "./main.js",
+  "./style.css",
   "./assets/gameImgs/flappy_card.png",
   "./assets/gameImgs/grass.png",
   "./assets/gameImgs/land.png",

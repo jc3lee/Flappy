@@ -1,4 +1,4 @@
-const STATIC_CACHE = "static-v6"
+const STATIC_CACHE = "static-v7"
 const FILES_TO_CACHE = [
   "/",
   "index.html",

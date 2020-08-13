@@ -214,10 +214,3 @@ body {
     --obstacleWidth: 65px;
   }
 }
-
-@media(min-height: 600px) {
-  :root {
-    --birdSize: 50px;
-    --obstacleWidth: 80px;
-  }
-}

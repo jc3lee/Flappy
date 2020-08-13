@@ -11,17 +11,17 @@
   "lang": "en",
   "icons": [
     {
-      "src": "./icons/pwa-192x192.png",
+      "src": "./assets/icons/pwa-192x192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "./icons/pwa-512x512.png",
+      "src": "./assets/icons/pwa-512x512.png",
       "type": "image/png",
       "sizes": "512x512"
     },
     {
-      "src": "./icons/mask-512x512.png",
+      "src": "./assets/icons/mask-512x512.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"

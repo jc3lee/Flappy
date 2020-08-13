@@ -312,7 +312,7 @@ const scoreUp = () => {
 
 const gameOver = () => {
   isGameOver = true
-  console.log("game over")
+  // console.log("game over")
   //game over clear gameMovingInterval, set gameEndMovingInterval
   clearInterval(gameMovingInterval)
   if (gameEndMovingInterval === "") {
@@ -364,7 +364,7 @@ const animGameOver = () => {
   renderEndGame()
 
   if (dropBirdEnded && faceDownBirdEnded) {
-    console.log("everything ended")
+    // console.log("everything ended")
     hasStarted = false
     clearInterval(gameEndMovingInterval)
   }

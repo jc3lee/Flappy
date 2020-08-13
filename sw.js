@@ -1,4 +1,4 @@
-const STATIC_CACHE = "static_cache"
+const STATIC_CACHE = "static-v3"
 const FILES_TO_CACHE = [
   "/",
   "index.html",
@@ -15,7 +15,7 @@ const FILES_TO_CACHE = [
 ]
 
 self.addEventListener("install", e => {
-  console.log("installed", e)
+  // console.log("installed", e)
   e.waitUntil(
     caches.open(STATIC_CACHE)
       .then(cache => {
@@ -26,10 +26,19 @@ self.addEventListener("install", e => {
 
 self.addEventListener("activate", e => {
   console.log("activated", e)
+  e.waitUntil(
+    caches.keys().then(
+      keylist =>
+        Promise.all(
+          keylist.map(key => {
+            if (key !== STATIC_CACHE) caches.delete(key)
+          })
+        )
+    ))
 })
 
 self.addEventListener("fetch", e => {
-  console.log("fetched", e)
+  // console.log("fetched", e)
   e.respondWith(
     caches.match(e.request)
       .then(response => {
